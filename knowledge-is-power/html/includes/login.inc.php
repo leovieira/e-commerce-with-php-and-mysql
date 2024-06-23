@@ -14,7 +14,7 @@ if (!empty($_POST['pass'])) {
 }
 
 if (empty($login_errors)) {
-	$q = "SELECT id, username, type, pass, IF(date_expires >= NOW(), true, false) AS expired FROM users WHERE email='$e'";
+	$q = "SELECT id, username, type, pass, IF(date_expires < NOW(), true, false) AS expired FROM users WHERE email='$e'";
 	$r = mysqli_query($dbc, $q);
 
 	if (mysqli_num_rows($r) === 1) {
@@ -29,7 +29,7 @@ if (empty($login_errors)) {
 
 			$_SESSION['user_id'] = $row['id'];
 			$_SESSION['username'] = $row['username'];
-			if ($row['expired'] === 1) $_SESSION['user_not_expired'] = true;
+			if (!$row['expired']) $_SESSION['user_not_expired'] = true;
 		} else {
 			$login_errors['login'] = 'The email address and password do not match those on file.';
 		}

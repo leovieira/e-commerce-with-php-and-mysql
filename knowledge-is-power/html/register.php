@@ -49,12 +49,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 		if ($rows === 0) {
 			$q = "INSERT INTO users (username, email, pass, first_name, last_name, date_expires)
-				VALUES ('$u', '$e', '" . password_hash($p, PASSWORD_BCRYPT) . "', '$fn', '$ln', ADDDATE(NOW(), INTERVAL 1 MONTH))";
+				VALUES ('$u', '$e', '" . password_hash($p, PASSWORD_BCRYPT) . "', '$fn', '$ln', SUBDATE(NOW(), INTERVAL 1 DAY))";
 			$r = mysqli_query($dbc, $q);
 
 			if (mysqli_affected_rows($dbc) === 1) {
-				echo '<div class="alert alert-success"><h3>Thanks!</h3>
-					<p>Thank you for registering! You may now log in and access the site\'s content.</p></div>';
+				$uid = mysqli_insert_id($dbc);
+
+				echo '<div class="alert alert-success"><h3>Thanks!</h3><p>Thank you for registering! To complete the process,
+					please now click the button bellow so that you may pay for your site access via PayPal.
+					The cost is $10 (US) per year. <strong>Note: When you complete your payment at PayPal,
+					please click the button to return to this site.</strong></p></div>';
+				echo '
+					<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+						<input type="hidden" name="cmd" value="_s-xclick">
+						<input type="hidden" name="custom" value="' . $uid . '">
+						<input type="hidden" name="email" value="' . $e . '">
+						<input type="hidden" name="hosted_button_id" value="8YW8FZDELF296">
+						<input type="image" src="https://www.sandbox.paypal.com/en_US/i/btn/btn_subscribeCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+						<img alt="" border="0" src="https://www.sandbox.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+					</form>
+				';
 				$body = "Thank you for registering at <whatever site>. Blah. Blah. Blah.\n\n";
 				mail($_POST['email'], 'Registration Confirmation', $body, 'From: admin@example.com');
 				include('./includes/footer.html');

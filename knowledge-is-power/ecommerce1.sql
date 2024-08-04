@@ -1,4 +1,4 @@
-USE `ecommerce1` ;
+USE `ecommerce1`;
 
 CREATE TABLE `categories` (
 	`id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,

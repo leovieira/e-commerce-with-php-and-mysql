@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Área Restrita"
+AuthUserFile /var/www/e-commerce-with-php-and-mysql/coffee/.htpasswd
+Require valid-user

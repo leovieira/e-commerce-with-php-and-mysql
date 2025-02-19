@@ -1,0 +1,11 @@
+# Desabilita a indexação:
+Options All -Indexes
+
+# Ignora todos os arquivos:
+IndexIgnore *
+
+# Evita o acesso a qualquer arquivo:
+<FilesMatch "^.*$">
+Order Allow,Deny
+Deny from all
+</FilesMatch>

@@ -1,0 +1,16 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Para promoções
+  RewriteRule ^shop/sales/?$ sales.php
+
+  # Para as categorias principais
+  RewriteRule ^shop/(coffee|goodies)/?$ shop.php?type=$1
+
+  # Para produtos específicos
+  RewriteRule ^browse/(coffee|goodies)/([A-Za-z\+\-]+)/([0-9]+)/?$ browse.php?type=$1&category=$2&id=$3
+
+  # Habilitar SSL para páginas específicas
+  # RewriteCond %{HTTPS} off
+  # RewriteRule ^(checkout\.php|billing\.php|final\.php|admin/(.*))$ https://%{HTTP_HOST}/$1 [R=301,L]
+</IfModule>
